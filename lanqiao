@@ -1,0 +1,82 @@
+OSPF
+背景描述
+开放式最短路径优先（Open Shortest Path First）是对链路状态路由协议
+的一种实现，隶属内部网关协议，故运作于自治系统内部。采用 Dijkstra's
+algorithm 被用来计算最短路径树。它使用“代价（Cost） ” 作为路由度量。链
+路状态数据库（LSDB）用来保存当前网络拓扑结构， 路由器上属于同一区域的链
+路状态数据库是相同的（属于多个区域的路由器会为每个区域维护一份链路状态
+数据库）。
+现在有一个路由服务，需要你的帮助。
+有 n 个节点，存在 m 条边，每条边都有长度 d 和花费 p，给定起点 s 和终点
+t，请输出起点到终点的最短距离及其花费，如果最短距离有多条路线，请输出
+花费最少的。
+输入
+输入 n， m，点的标号是 1-n，然后是 m 行，每行 4 个整数， a,b,d,p 表示 a
+到 b 之间有一条无向边,长度 d，花费 p。最后一行是两个数起点 s，终点 t。
+1<n<=1000,0<m<100000,s!=t,0<d<100,0<p<100
+输出
+输出一行有两个数，最短距离及其花费。 数据保证连通。
+输入样例
+3 2
+1 2 5 6
+2 3 4 5
+1 3
+输出样例
+9 11
+
+
+代码：
+#include<iostream>
+#include<vector>
+#include<map>
+#include<algorithm>
+#include<deque>
+#include<queue>
+#include<string>
+#include<cstring>
+using namespace std;
+map<int, vector<int> > load;
+int s, t;
+int len[1005][1005];
+int cost[1005][1005];
+bool mark[1005][1005];
+int minlen = INT_MAX, mincost = INT_MAX;
+void dfs(int start, int lens,int costs ){
+	if (lens > minlen)return;
+	if (start == t){
+		if (lens < minlen){
+			minlen = lens; mincost = costs;
+		}
+		else if (lens == minlen && costs < mincost)mincost = costs;
+		return;
+	}
+	if (!load[start].empty()){
+		for (size_t i = 0; i < load[start].size(); i++){
+			int now = load[start][i];
+			if (mark[start][now]){
+				mark[start][now] = false;
+				mark[now][start] = false;
+				dfs(load[start][i], lens + len[start][now], costs + cost[start][now]);
+				mark[start][now] = true;
+				mark[now][start] = true;
+			}
+		}
+	}
+}
+int main(){
+	int n, m;
+	cin >> n >> m;
+	memset(mark, true, sizeof(mark));
+	for (int i = 0; i < m; i++){
+		int a, b, d, p;
+		cin >> a >> b >> d >> p;
+		load[a].push_back(b);
+		load[b].push_back(a);
+		len[a][b] = len[b][a] = d;
+		cost[a][b] = cost[b][a] = p;
+	}
+	cin >> s >> t;
+	dfs(s, 0,0);
+	cout << minlen << " " << mincost;
+	return 0;
+}
