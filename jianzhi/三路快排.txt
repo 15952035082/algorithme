@@ -1,0 +1,43 @@
+public class QuickSort3Ways {
+
+    public static void sort(Integer[] arr){
+        Integer n = arr.length;
+        quickSort3Ways(arr,0,n-1);
+    }
+
+    private static void quickSort3Ways(Integer[] arr, int l, int r) {
+        if(r-l<=15){ //要排序的部分数组数量小于16直接调用插入排序
+            InsertionSort.sort2(arr,l,r);
+            return;
+        }
+        Tlt.exch(arr,l,StdRandom.uniform(l, r));//从数组中随机获取一个位置的数和最左端的交换，减少偶然性
+                                                 //（若数组本来就已经排好序）则快排退化为插入排序。
+        Integer v = arr[l];//基准元素，是划分数组的分界线
+
+        int lt= l;      // arr[l+1...lt] < v  //划分为三段数据，小于v的，等于v的，大于v的
+        int gt = r+1;   // arr[gt...r] > v
+        int i = l+1;    // arr[lt+1...i] == v
+        while(i<gt){ //最后i==gt，完成一次碰头，以v为分界，左边的都比v小，右边的都比v大
+            if(arr[i] < v){
+                Tlt.exch(arr,i,lt+1); //把当前下标为i的元素和lt+1交换，因为当前的数比v小，就放到最左边
+                lt++;                //i和最左端的值都加1，
+                i++;
+            }else if(arr[i]>v){        //这是遇到了比v大的，和最右端的数交换
+                Tlt.exch(arr,i,gt-1);  //i会继续加一到下一个元素，gt减少1，向前逼近。
+                gt--;
+
+            }else{     //如果当前元素和v相等，则继续看下一个元素。
+                i++;
+            }
+        }
+        Tlt.exch(arr,l,lt);  //交换基准元素和碰头的下标初的元素，完成了一轮交换，左边的都比v小，右边的都比v大
+        quickSort3Ways(arr,l,lt-1);//不考虑==v部分  lt不一定等于gt，因为中间是等于v的部分，可能不止一个元素等于v。
+        quickSort3Ways(arr,gt,r);//不考虑==v部分
+    }
+
+    public static void main(String[] args) {
+        Integer[] random = Tlt.random(100000, 0, 100000);
+        sort(random);
+        Tlt.show(random);
+    }
+}

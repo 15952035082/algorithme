@@ -1,0 +1,10 @@
+public class Solution {
+    public int NumberOf1Between1AndN_Solution(int n) {
+    int cnt = 0;
+        for (int m = 1; m <= n; m *= 10) { //假设n=12345
+            int a = n / m, b = n % m;  //m=1时，a=12345，b=0. m=2时，a=1234，b=5；
+            cnt += (a + 8) / 10 * m + (a % 10 == 1 ? b + 1 : 0);
+        } //a的个位如果大于等于2，则加上（a的左边的数+1）*当前位数。 a的个位如果为1，则加上a的左边的数*当前位数再加上右边的数+1。
+        return cnt; //a的个位为0，则只加上加上a的左边的数。
+    }
+}

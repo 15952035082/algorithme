@@ -1,0 +1,21 @@
+输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。
+如果是则输出Yes,否则输出No。
+假设输入的数组的任意两个数字都互不相同。
+
+
+public boolean VerifySquenceOfBST(int [] sequence) {
+        if(sequence.length==0)return false;
+        int len=sequence.length;
+        return searchBST(sequence,0,len-1);
+    }
+    private boolean searchBST(int[] sequence,int first,int last){
+        if(last-first <=1)return true;
+        int rootval=sequence[last];
+        int cutPosition=first;
+        while(sequence[cutPosition]<rootval)++cutPosition;
+        for(int i=cutPosition;i<last;++i){
+            if(sequence[i]<rootval)return false;
+        }
+        return searchBST(sequence,first,cutPosition-1) &&searchBST(sequence,cutPosition,last-1);
+        
+    }

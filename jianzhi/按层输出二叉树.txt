@@ -1,0 +1,31 @@
+从上到下按层打印二叉树，同一层结点从左至右输出。每一层输出一行。
+
+
+
+
+
+
+public class Solution {
+    ArrayList<ArrayList<Integer> > Print(TreeNode pRoot) {
+        ArrayList<ArrayList<Integer> > res=new ArrayList<>();
+        Queue<TreeNode> que=new LinkedList<>();
+        if(pRoot==null)return res;
+        ArrayList<Integer> layerList=new ArrayList<>();
+        que.add(pRoot);
+        int start=0,end=1;
+        while(que.isEmpty()==false){
+            TreeNode cur=que.poll();
+            layerList.add(cur.val);
+            ++start;
+            if(cur.left!=null)que.add(cur.left);
+            if(cur.right!=null)que.add(cur.right);
+            if(start==end){
+                start=0;
+                end=que.size();
+                res.add(layerList);
+                layerList=new ArrayList<Integer>();
+            }            
+        }
+        return res;
+    }    
+}

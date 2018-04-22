@@ -1,0 +1,22 @@
+把只包含因子2、3和5的数称作丑数（Ugly Number）。例如6、8都是丑数，但14不是，因为它包含因子7。
+习惯上我们把1当做是第一个丑数。求按从小到大的顺序的第N个丑数。
+
+
+
+import static java.lang.Math.min;
+public class Solution {
+    public int GetUglyNumber_Solution(int index) {
+        if(index<=1) return index;
+        int[] res=new int[index];
+        res[0]=1;
+        int ugly2=0,ugly3=0,ugly5=0;
+        for(int i=1;i<index;i++){
+            int minNum=min(2*res[ugly2],min(3*res[ugly3],5*res[ugly5]));
+            res[i]=minNum;
+            if(minNum==res[ugly2]*2)++ugly2;
+            if(minNum==res[ugly3]*3)++ugly3;
+            if(minNum==res[ugly5]*5)++ugly5;
+        }
+        return res[index-1];
+    }
+}

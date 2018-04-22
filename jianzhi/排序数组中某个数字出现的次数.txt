@@ -1,0 +1,36 @@
+统计一个数字在排序数组中出现的次数。
+
+
+
+
+
+
+
+public class Solution {
+    public int GetNumberOfK(int [] array , int k) {
+       int first=getFirstK(array,k);
+       int last=getLastK(array,k);
+        if(first==-1 ||last==-1)return 0;
+        else return last-first+1;            //找出最后一个数字出现的位置 和第一个数字出现位置
+    } 
+    private int getFirstK(int[] array,int k){
+        int low=0,high=array.length-1;
+        while(low<=high){
+            int mid=(low+high)/2;
+            if(array[mid]>=k)high=mid-1;
+            else low=mid+1;
+        }
+        if(low>=array.length ||array[low]!=k)return -1;
+        return low;
+    }
+    private int getLastK(int[] array,int k){
+        int low=0,high=array.length-1;
+        while(low<=high){
+            int mid=(low+high)/2;
+            if(array[mid]>k)high=mid-1;
+            else low=mid+1;
+        }
+        if(high<0 ||array[high]!=k)return -1;
+        return high;
+    }
+}

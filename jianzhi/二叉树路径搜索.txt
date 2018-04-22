@@ -1,0 +1,22 @@
+输入一颗二叉树和一个整数，打印出二叉树中结点值的和为输入整数的所有路径。
+路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。
+
+
+public class Solution {
+    private ArrayList<ArrayList<Integer>> res=new ArrayList<>();
+    public ArrayList<ArrayList<Integer>> FindPath(TreeNode root,int target) {
+        dfs(root,target,0,new ArrayList<Integer>());
+        return res;
+    }
+    private void dfs(TreeNode node,int target,int cursum ,ArrayList<Integer> path){
+        if(node==null)return ;
+        cursum+=node.val;
+        path.add(node.val);
+        if(cursum==target &&node.left==null && node.right==null)res.add(new ArrayList(path));
+        else {
+            dfs(node.left,target,cursum,path);
+            dfs(node.right,target,cursum,path);
+        }
+        path.remove(path.size()-1);       
+    }
+}

@@ -1,0 +1,15 @@
+public class Solution {
+    public ListNode FindKthToTail(ListNode head,int k) {
+        ListNode listnode1=head;
+        ListNode listnode2=head;
+        for(int i=0;i<k;i++){
+            if(listnode1==null)return null;
+            listnode1=listnode1.next;
+        }
+        while(listnode1!=null){
+            listnode2=listnode2.next;
+            listnode1=listnode1.next;
+        }
+        return listnode2;
+    }
+}

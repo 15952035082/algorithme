@@ -1,0 +1,20 @@
+从上往下打印出二叉树的每个节点，同层节点从左至右打印。
+
+
+
+public class Solution {
+    public ArrayList<Integer> PrintFromTopToBottom(TreeNode root) {
+        Queue<TreeNode> queue=new LinkedList<>();
+        ArrayList<Integer> res=new ArrayList<>();
+        if(root==null)return  res;
+        queue.add(root);
+        while(queue.isEmpty()==false){
+            TreeNode now=queue.peek();
+            queue.poll();
+            res.add(now.val);
+            if(now.left!=null)queue.add(now.left);
+            if(now.right!=null)queue.add(now.right);
+        }
+        return res;
+    }
+}

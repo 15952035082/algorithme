@@ -1,0 +1,39 @@
+请实现两个函数，分别用来序列化和反序列化二叉树
+
+
+
+
+
+
+import java.util.*;
+public class Solution {
+    int index=-1;
+    String Serialize(TreeNode root) {
+        StringBuffer res=new StringBuffer();
+        if(root==null){
+            res.append("#,");
+            return res.toString();
+        }
+        Queue<TreeNode> que=new LinkedList<>();
+        que.add(root);
+        while(que.isEmpty()==false){
+            TreeNode cur=que.poll();
+            res.append(cur.val+",");
+            res.append(Serialize(root.left));
+            res.append(Serialize(root.right));
+            return res.toString();
+        }
+        return res.toString();
+  }
+    TreeNode Deserialize(String str) {
+       ++index;
+        String[] str2=str.split(",");
+        TreeNode node=null;
+        if(!str2[index].equals("#")){
+            node=new TreeNode(Integer.valueOf(str2[index]));
+            node.left=Deserialize(str);
+            node.right=Deserialize(str);
+        }
+        return node;
+  }
+}

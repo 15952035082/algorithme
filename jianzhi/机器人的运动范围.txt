@@ -1,0 +1,32 @@
+package com.nowcoder;
+
+public class Solution {
+
+     private  static int movingCount(int threshold, int rows, int cols){
+         boolean[][] visited=new boolean[rows][cols];
+         return searchAround (visited,threshold,rows,cols,0,0);
+    }
+    private static  int  searchAround(boolean[][] visited,int threshold, int rows,int cols,int nowrows,int nowcols ){
+         visited[nowrows][nowcols]=true;
+         if(nowrows==rows ||nowrows<0)return 0;
+         if(nowcols ==cols ||nowcols <0)return 0;
+         if(getSum(nowcols)+getSum(nowrows) >threshold)return 0;
+         int left=0,right=0,up=0,down=0;
+         if(nowcols!=0 && !visited[nowrows][nowcols-1]) left=searchAround(visited,threshold,rows,cols,nowrows,nowcols-1);
+         if(nowcols!= cols-1&&!visited[nowrows][nowcols+1]) right=searchAround(visited,threshold,rows,cols,nowrows,nowcols+1);
+         if(nowrows!=0&&!visited[nowrows-1][nowcols]) up=searchAround(visited,threshold,rows,cols,nowrows-1,nowcols);
+         if(nowrows!=rows-1 &&!visited[nowrows+1][nowcols]) down=searchAround(visited,threshold,rows,cols,nowrows+1,nowcols);
+         return left+right+up+down+1;
+    }
+    public static int getSum(int num){
+         int res=0;
+         while(num!=0){
+             res=res+num%10;
+             num/=10;
+         }
+         return res;
+    }
+    public static void main(String[] args){
+        System.out.println(movingCount(10,14,12));
+    }
+}

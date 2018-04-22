@@ -1,0 +1,53 @@
+在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。
+输入一个数组,求出这个数组中的逆序对的总数P。
+并将P对1000000007取模的结果输出。 即输出P%1000000007
+输入描述:
+题目保证输入的数组中没有的相同的数字
+
+数据范围：
+
+	对于%50的数据,size<=10^4
+
+	对于%75的数据,size<=10^5
+
+	对于%100的数据,size<=2*10^5
+
+示例1
+输入
+1,2,3,4,5,6,7,0
+输出
+7
+
+
+
+
+
+
+private long cnt=0;
+    private int[] temp;
+    public int InversePairs(int [] array) {
+        temp=new int[array.length];
+        mergeSort(array,0,array.length-1);
+        return (int)(cnt%1000000007);
+    }
+    private void mergeSort(int[] array,int first,int last){
+        if(last-first<1)return ;
+        int mid=(first+last)/2;
+        mergeSort(array,first,mid);
+        mergeSort(array,mid+1,last);
+        merge(array,first,mid,last);
+    }
+    private void merge(int[] array,int first,int mid,int last){
+        int i=first,j=mid+1,k=first;
+        while(i<=mid ||j<=last){
+            if(i>mid)temp[k]=array[j++];
+            else if(j>last)temp[k]=array[i++];
+            else if(array[i]<array[j])temp[k]=array[i++];
+            else{
+                temp[k]=array[j++];
+                cnt+=mid-i+1;                
+            }
+            ++k;
+        }
+        for(k=first;k<=last;++k)array[k]=temp[k];
+    }                      
